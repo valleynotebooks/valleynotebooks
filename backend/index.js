@@ -1,7 +1,6 @@
 /**
  * Valley Notebooks – Backend API
  * Node.js + Express (Vercel Serverless Compatible)
- * STEP 4: backend/index.js
  */
 
 const express = require("express");
@@ -20,7 +19,7 @@ app.use(cors({ origin: "*", methods: ["GET", "POST"] }));
 app.use(express.json({ limit: "1mb" }));
 
 /* =========================
-   RATE LIMITING (ANTI-SPAM)
+   RATE LIMITING
 ========================= */
 const orderLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -43,6 +42,9 @@ async function connectDB() {
   isConnected = true;
 }
 
+/* =========================
+   ORDER MODEL
+========================= */
 const OrderSchema = new mongoose.Schema(
   {
     orderId: { type: String, unique: true },
@@ -72,7 +74,7 @@ async function sendTelegramAlert(order) {
   if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) return;
 
   const message = `
-🧾 *New Order – Valley Notebooks*
+🧾 New Order – Valley Notebooks
 
 🆔 Order ID: ${order.orderId}
 👤 Name: ${order.name}
@@ -92,7 +94,6 @@ async function sendTelegramAlert(order) {
     body: JSON.stringify({
       chat_id: process.env.TELEGRAM_CHAT_ID,
       text: message,
-      parse_mode: "Markdown",
     }),
   });
 }
@@ -107,7 +108,6 @@ app.post("/api/order", async (req, res) => {
     const { name, phone, address, pincode, items, totalQty, totalAmount } =
       req.body;
 
-    // Validation
     if (
       !name ||
       !phone ||
@@ -121,27 +121,11 @@ app.post("/api/order", async (req, res) => {
     }
 
     if (!/^[6-9]\d{9}$/.test(phone)) {
-      return res.status(400).json({ error: "Invalid phone number" });
+      return res.status(400).json({ error: "Invalid phone" });
     }
 
     if (!/^\d{6}$/.test(pincode)) {
       return res.status(400).json({ error: "Invalid pincode" });
-    }
-
-    if (totalQty < 500 || totalQty > 500000) {
-      return res.status(400).json({ error: "Quantity out of range" });
-    }
-
-    // Duplicate prevention (same phone + amount within 5 minutes)
-    const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
-    const duplicate = await Order.findOne({
-      phone,
-      totalAmount,
-      createdAt: { $gte: fiveMinAgo },
-    });
-
-    if (duplicate) {
-      return res.status(409).json({ error: "Duplicate order detected" });
     }
 
     const order = new Order({
@@ -167,6 +151,19 @@ app.post("/api/order", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN – GET ALL ORDERS
+========================= */
+app.get("/api/orders", async (req, res) => {
+  try {
+    await connectDB();
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch orders" });
   }
 });
 
