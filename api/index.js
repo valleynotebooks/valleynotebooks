@@ -3,37 +3,34 @@
  */
 
 const mongoose = require("mongoose");
+const fetch = require("node-fetch");
 
 let isConnected = false;
-
-// MongoDB connect
 async function connectDB() {
   if (isConnected) return;
   await mongoose.connect(process.env.MONGODB_URI);
   isConnected = true;
 }
 
-// Import Order model
 const Order =
-  mongoose.models.Order ||
-  require("./models/Order");
+  mongoose.models.Order || require("./models/Order");
 
-export default async function handler(req, res) {
-  await connectDB();
+module.exports = async function handler(req, res) {
+  try {
+    await connectDB();
 
-  // Health check
-  if (req.method === "GET") {
-    return res.status(200).json({ ok: true });
-  }
+    // Health check
+    if (req.method === "GET") {
+      return res.status(200).json({ ok: true });
+    }
 
-  // Create order
-  if (req.method === "POST") {
-    try {
+    // Create order
+    if (req.method === "POST") {
       const order = await Order.create(req.body);
 
-      // Telegram notification
       const message = `
-🛒 New Order Received
+🧾 New Order Received
+
 🆔 ${order.orderId}
 👤 ${order.name}
 📞 ${order.phone}
@@ -53,11 +50,12 @@ export default async function handler(req, res) {
         }
       );
 
-      return res.status(201).json({ success: true, order });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
+      return res.status(201).json({ success: true });
     }
-  }
 
-  res.status(405).json({ error: "Method not allowed" });
-    }
+    return res.status(405).json({ error: "Method not allowed" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
