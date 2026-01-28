@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valley Notebooks – Bulk Notebook Supplier</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Valley Notebooks – Premium bulk notebooks supplier. Copy, Jumbo, A4 and Spiral notebooks at fixed transparent pricing." />
+  <meta name="keywords" content="Valley Notebooks, bulk notebooks, copy notebook, A4 notebook, jumbo notebook, spiral notebook" />
+  <meta name="author" content="Valley Notebooks" />
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#000000" />
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      Valley <span>Notebooks</span>
+    </div>
+    <nav class="nav">
+      <a href="#products">Products</a>
+      <a href="#trust">Trust</a>
+      <a href="#faq">FAQ</a>
+      <button id="cartBtn" class="cart-btn">
+        Cart <span id="cartCount">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Premium Bulk Notebooks</h1>
+    <p>Transparent pricing • Bulk supply • Trusted by institutions</p>
+    <a href="#products" class="primary-btn">View Products</a>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section id="products" class="products">
+    <h2>Our Notebook Range</h2>
+
+    <div class="category-tabs">
+      <button class="tab active" data-category="copy">Copy Notebook</button>
+      <button class="tab" data-category="jumbo">Jumbo Notebook</button>
+      <button class="tab" data-category="a4">A4 Notebook</button>
+      <button class="tab" data-category="spiral">Spiral Notebook</button>
+    </div>
+
+    <div id="productGrid" class="product-grid">
+      <!-- Products injected by JS -->
+    </div>
+  </section>
+
+  <!-- CART DRAWER -->
+  <aside id="cartDrawer" class="cart-drawer">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button id="closeCart">✕</button>
+    </div>
+
+    <div id="cartItems" class="cart-items">
+      <!-- Cart items via JS -->
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total">
+        Total: ₹<span id="cartTotal">0</span>
+      </div>
+      <button id="checkoutBtn" class="primary-btn" disabled>
+        Proceed to Checkout
+      </button>
+    </div>
+  </aside>
+
+  <!-- CHECKOUT -->
+  <section id="checkoutSection" class="checkout hidden">
+    <h2>Checkout</h2>
+
+    <form id="checkoutForm">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="name" required />
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="phone" required />
+      </div>
+
+      <div class="form-group">
+        <label>Full Address</label>
+        <textarea id="address" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Pincode</label>
+        <input type="text" id="pincode" required />
+      </div>
+
+      <button type="submit" class="primary-btn">
+        Place Order
+      </button>
+    </form>
+  </section>
+
+  <!-- THANK YOU -->
+  <section id="thankYou" class="thank-you hidden">
+    <h2>Thank You for Your Order</h2>
+    <p>Your order has been placed successfully.</p>
+    <p><strong>Order ID:</strong> <span id="orderId"></span></p>
+    <p>Estimated delivery: <span id="deliveryDate"></span></p>
+    <button id="downloadInvoice" class="primary-btn">
+      Download Invoice
+    </button>
+  </section>
+
+  <!-- TRUST -->
+  <section id="trust" class="trust">
+    <h2>Why Choose Valley Notebooks</h2>
+    <div class="trust-grid">
+      <div>✔ Fixed Transparent Pricing</div>
+      <div>✔ Bulk Supply Expertise</div>
+      <div>✔ PAN India Delivery</div>
+      <div>✔ Institutional Trusted</div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <details>
+      <summary>What is the minimum order quantity?</summary>
+      <p>Minimum order is 500 notebooks.</p>
+    </details>
+    <details>
+      <summary>Do you deliver PAN India?</summary>
+      <p>Yes, we deliver across India.</p>
+    </details>
+    <details>
+      <summary>How can I track my order?</summary>
+      <p>You can track using Order ID or phone number.</p>
+    </details>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2026 Valley Notebooks</p>
+    <p>Email: valleynotebookshelp@gmail.com | Phone: +91 9103292029</p>
+  </footer>
+
+  <!-- LOADER -->
+  <div id="loader" class="loader hidden"></div>
+
+  <!-- SCROLL TOP -->
+  <button id="scrollTop" class="scroll-top">↑</button>
+
+  <!-- JS -->
+  <script src="script.js"></script>
+</body>
+</html>
