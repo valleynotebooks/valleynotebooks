@@ -1,0 +1,8 @@
+{
+  "name": "valley-notebooks",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "mongoose": "^8.0.0"
+  }
+}
